@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class PaginationService
 {
+    /**
+     * @param Request $request
+     * @param $model
+     * @return object
+     */
     public static function paginate_with_request (Request $request, $model)
     {
         $values = self::get_values_from_request($request);
@@ -17,6 +22,10 @@ class PaginationService
         );
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public static function get_values_from_request (Request $request)
     {
         $request->validate([
@@ -30,6 +39,12 @@ class PaginationService
         ];
     }
 
+    /**
+     * @param $model
+     * @param int $skip
+     * @param $limit
+     * @return object
+     */
     public static function paginate ($model, int $skip = 0, $limit = 50)
     {
         return (object) [
