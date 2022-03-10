@@ -34,4 +34,24 @@ class AdminAction extends \App\Services\Action
 
         return $this->store($data);
     }
+
+    public function login(array $data)
+    {
+        $admin_object = $this->model::where('name', $data['name'])->first();
+
+        if(!empty($admin_object))
+        {
+            if(Hash::check($data['password'], $admin_object->password))
+            {
+                return $admin_object->createToken('Admin-Token')->plainTextToken;
+            }
+        }
+
+        throw new CustomException('Name or Password is Wrong!',0,400);
+    }
+
+    public function login_by_request(Request $request,$validation_rule = 'login')
+    {
+        return $this->login($this->get_data_from_request($request,$validation_rule));
+    }
 }

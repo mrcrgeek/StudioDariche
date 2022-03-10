@@ -15,4 +15,12 @@ class AdminController extends Controller
             'message' => 'Register Was Successful'
         ], 200);
     }
+
+    public function login(Request $request)
+    {
+        return response()->json([
+            'message' => 'Login Was Successful',
+            'Token' => (new AdminAction())->login_by_request($request)
+        ], 200);
+    }
 }
