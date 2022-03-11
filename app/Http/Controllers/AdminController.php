@@ -23,4 +23,9 @@ class AdminController extends Controller
             'Token' => (new AdminAction())->login_by_request($request)
         ], 200);
     }
+
+    public function check_admin(Request $request)
+    {
+        return $request->user();
+    }
 }

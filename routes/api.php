@@ -18,4 +18,7 @@ use App\Http\Controllers\AdminController;
 Route::prefix('admin')->group(function (){
     Route::post('/register',[AdminController::class, 'register']);
     Route::post('/login',[AdminController::class, 'login']);
+    Route::get('/check_admin',[AdminController::class, 'check_admin'])->middleware('auth:admins');
 });
+
+
