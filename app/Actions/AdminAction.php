@@ -32,7 +32,7 @@ class AdminAction extends \App\Services\Action
         $data = $this->get_data_from_request($request,$validation_role);
         $data['password'] = Hash::make($data['password']);
 
-        return $this->store($data);
+        return parent::store($data);
     }
 
     public function login(array $data)
