@@ -23,6 +23,15 @@ class WorkAction extends \App\Services\Action
             'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
             'type' => 'required|in:img,color',
             'is_index' => 'boolean|nullable'
+        ],
+        'update_img' => [
+            'information' => 'string',
+            'img' => 'file|mimes:jpg,png,jpeg|max:10000',
+            'is_index' => 'boolean|nullable'
+        ],
+        'update_color' => [
+            'img' => 'file|mimes:jpg,png,jpeg|max:10000',
+            'is_index' => 'boolean|nullable'
         ]
     ];
 
@@ -65,22 +74,21 @@ class WorkAction extends \App\Services\Action
             $validation_role = 'store_color';
         }
 
-        $data = $this->get_data_from_request($request, $validation_role);
-        $this->store($data);
+        return parent::store_by_request($request, $validation_role);
     }
 
     public function store(array $data)
     {
-            $this->check_is_index($data);
+        $this->check_is_index($data);
 
-            $data['img'] = $this->upload_file($data['img']);
+        $data['img'] = $this->upload_file($data['img']);
 
-            return $this->model::create($data);
+        return parent::store($data);
     }
 
     public function check_is_index(array $data)
     {
-        if(isset($data['is_index']) && $data['is_index'])
+        if(isset($data['is_index']))
         {
             $get_limit_validation = $this->limit_array[$data['work_name']];
 
@@ -95,5 +103,41 @@ class WorkAction extends \App\Services\Action
                 throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 0, 400);
             }
         }
+    }
+
+    public function update_entity_by_request_and_id(Request $request, string $id, $validation_role = 'update_img')
+    {
+        $get_type = $this->get_by_id($id);
+
+        if($get_type->type == 'color')
+        {
+            $validation_role = 'update_color';
+        }
+
+        return $this->update_by_id(
+            $this->get_data_from_request($request,$validation_role),
+            $id
+        );
+    }
+
+    public function update_by_id(array $update_data,string $id)
+    {
+        $work_data = $this->model::where('id',$id)->first()->toArray();
+
+        if(isset($update_data['is_index']) && $update_data['is_index'] != $work_data['is_index'])
+        {
+            if($update_data['is_index'])
+            {
+                $work_data['is_index'] = true;
+                $this->check_is_index($work_data);
+            }
+        }
+
+        if(isset($update_data['img']))
+        {
+            $update_data['img'] = $this->upload_file($update_data['img']);
+        }
+
+        return $this->model::where('id',$id)->update($update_data);
     }
 }

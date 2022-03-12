@@ -16,4 +16,13 @@ class WorkController extends Controller
             'message' => 'Art Added Successfully'
         ], 200);
     }
+
+    public function update_art(Request $request,string $id)
+    {
+        (new WorkAction())->update_entity_by_request_and_id($request, $id);
+
+        return response()->json([
+            'message' => 'Art Updated Successfully',
+        ], 200);
+    }
 }
