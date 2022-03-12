@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Exceptions\CustomException;
 use App\Models\Work;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -139,5 +140,12 @@ class WorkAction extends \App\Services\Action
         }
 
         return $this->model::where('id',$id)->update($update_data);
+    }
+
+    public function delete_by_id(string $id)
+    {
+        $Work = $this->get_by_field('id',$id);
+
+        return $Work->delete();
     }
 }

@@ -25,4 +25,13 @@ class WorkController extends Controller
             'message' => 'Art Updated Successfully',
         ], 200);
     }
+
+    public function delete_art(string $id)
+    {
+        (new WorkAction())->delete_by_id($id);
+
+        return response()->json([
+            'message' => 'Art Deleted Successfully'
+        ], 200);
+    }
 }
