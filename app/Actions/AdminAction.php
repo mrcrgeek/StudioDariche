@@ -30,6 +30,12 @@ class AdminAction extends \App\Services\Action
     public function store_by_request(Request $request, $validation_role = 'store')
     {
         $data = $this->get_data_from_request($request,$validation_role);
+
+        return parent::store($data);
+    }
+
+    public function store(array $data)
+    {
         $data['password'] = Hash::make($data['password']);
 
         return parent::store($data);
