@@ -11,7 +11,7 @@ use Illuminate\Database\Query\Builder;
 class WorkAction extends \App\Services\Action
 {
     protected array $validation_roles = [
-        'store' => [
+        'store_img' => [
             'information' => 'required|string',
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
             'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
@@ -26,25 +26,7 @@ class WorkAction extends \App\Services\Action
         ]
     ];
 
-    public function __construct()
-    {
-        $this->model = Work::class;
-    }
-
-    public function store_by_request(Request $request, $validation_role = 'store')
-    {
-        if($request['type'] == 'color')
-        {
-            $validation_role = 'store_color';
-        }
-
-        $data = $this->get_data_from_request($request, $validation_role);
-        $this->store($data);
-    }
-
-    public function store(array $data)
-    {
-        $limit_array = [
+    protected array $limit_array = [
             'corporate_identity' => [
                 'color' => 3,
                 'img' => 4
@@ -71,9 +53,36 @@ class WorkAction extends \App\Services\Action
             ]
         ];
 
+    public function __construct()
+    {
+        $this->model = Work::class;
+    }
+
+    public function store_by_request(Request $request, $validation_role = 'store_img')
+    {
+        if($request['type'] == 'color')
+        {
+            $validation_role = 'store_color';
+        }
+
+        $data = $this->get_data_from_request($request, $validation_role);
+        $this->store($data);
+    }
+
+    public function store(array $data)
+    {
+            $this->check_is_index($data);
+
+            $data['img'] = $this->upload_file($data['img']);
+
+            return $this->model::create($data);
+    }
+
+    public function check_is_index(array $data)
+    {
         if(isset($data['is_index']) && $data['is_index'])
         {
-            $get_limit_validation = $limit_array[$data['work_name']];
+            $get_limit_validation = $this->limit_array[$data['work_name']];
 
             $WorkAction = $this->model::
             where('work_name', $data['work_name'])
@@ -86,8 +95,5 @@ class WorkAction extends \App\Services\Action
                 throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 0, 400);
             }
         }
-            $data['img'] = $this->upload_file($data['img']);
-
-            return $this->model::create($data);
     }
 }
