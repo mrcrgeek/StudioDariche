@@ -233,7 +233,7 @@ class Action
             $eloquent
         );
 
-        $eloquent = $this->add_order_to_eloquent($order_by, $eloquent);
+//        $eloquent = $this->add_order_to_eloquent($order_by, $eloquent);
 
         return PaginationService::paginate_with_request(
             $request,
