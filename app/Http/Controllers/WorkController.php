@@ -34,4 +34,9 @@ class WorkController extends Controller
             'message' => 'Art Deleted Successfully'
         ], 200);
     }
+
+    public function get_art(Request $request)
+    {
+        return response()->json((new WorkAction())->get_by_request($request));
+    }
 }

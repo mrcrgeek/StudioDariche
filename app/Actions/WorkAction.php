@@ -21,7 +21,7 @@ class WorkAction extends \App\Services\Action
         ],
         'store_color' => [
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
-            'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
+            'work_name' => 'required|string|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
             'type' => 'required|in:img,color',
             'is_index' => 'boolean|nullable'
         ],
@@ -33,6 +33,12 @@ class WorkAction extends \App\Services\Action
         'update_color' => [
             'img' => 'file|mimes:jpg,png,jpeg|max:10000',
             'is_index' => 'boolean|nullable'
+        ],
+        'get_query' => [
+            'category' => 'string|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
+            'type' => 'string|in:img,color',
+            'id' => 'integer',
+            'is_index' => 'boolean'
         ]
     ];
 
@@ -147,5 +153,37 @@ class WorkAction extends \App\Services\Action
         $Work = $this->get_by_field('id',$id);
 
         return $Work->delete();
+    }
+
+    public function get_by_request(Request $request, array|string $query_validation_role = 'get_query', Model|Builder|null $eloquent = null, array $order_by = ['id' => 'DESC']): object
+    {
+        return parent::get_by_request($request,$query_validation_role = 'get_query',$eloquent,$order_by);
+    }
+
+    public function query_to_eloquent(array $query, Model|Builder $eloquent = null)
+    {
+        $eloquent = parent::query_to_eloquent($query, $eloquent);
+
+        if (isset($query['category']))
+        {
+            $eloquent = $eloquent->where('work_name', $query['category']);
+        }
+
+        if(isset($query['type']))
+        {
+            $eloquent = $eloquent->where('type',$query['type']);
+        }
+
+        if(isset($query['id']))
+        {
+            $eloquent = $eloquent->where('id',$query['id']);
+        }
+
+        if(isset($query['is_index']))
+        {
+            $eloquent = $eloquent->where('is_index',$query['is_index']);
+        }
+
+        return $eloquent;
     }
 }
