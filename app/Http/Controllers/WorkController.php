@@ -39,4 +39,9 @@ class WorkController extends Controller
     {
         return response()->json((new WorkAction())->get_by_request($request));
     }
+
+    public function get_by_id(Request $request,$id)
+    {
+        return response()->json((new WorkAction())->get_by_id($id));
+    }
 }

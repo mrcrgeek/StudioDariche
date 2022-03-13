@@ -186,4 +186,9 @@ class WorkAction extends \App\Services\Action
 
         return $eloquent;
     }
+
+    public function get_by_id(string $id)
+    {
+        return parent::get_by_id($id);
+    }
 }
