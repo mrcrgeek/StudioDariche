@@ -28,6 +28,8 @@ Route::prefix('/admin')->group(function (){
     Route::get('/check_admin',[AdminController::class, 'check_admin'])->middleware('auth:admins');
 });
 
+//get Routes
 Route::get('/index', [WorkController::class, 'get_art']);
+Route::get('/index/{id}', [WorkController::class, 'get_by_id']);
 
 
