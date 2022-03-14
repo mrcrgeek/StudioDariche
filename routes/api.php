@@ -35,4 +35,5 @@ Route::get('/index/{id}', [WorkController::class, 'get_by_id']);
 
 //ContactUs Routes(get,post)
 Route::post('/ContactUsMessage', [ContactUsMessageController::class, 'store_message']);
-Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messages']);
+Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messages'])->middleware('auth:admins');
+Route::delete('/ContactUsContents/{id}', [ContactUsMessageController::class, 'delete_message'])->middleware('auth:admins');
