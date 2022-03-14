@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactUsMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,10 @@ Route::prefix('/admin')->group(function (){
     Route::get('/check_admin',[AdminController::class, 'check_admin'])->middleware('auth:admins');
 });
 
-//get Routes
+//get index Routes
 Route::get('/index', [WorkController::class, 'get_art']);
 Route::get('/index/{id}', [WorkController::class, 'get_by_id']);
 
-
+//ContactUs Routes(get,post)
+Route::post('/ContactUsMessage', [ContactUsMessageController::class, 'store_message']);
+Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messages']);
