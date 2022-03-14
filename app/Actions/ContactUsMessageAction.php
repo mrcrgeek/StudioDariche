@@ -34,4 +34,11 @@ class ContactUsMessageAction extends \App\Services\Action
             ContactUsMessage::orderBy('id','DESC')
         );
     }
+
+    public function delete_by_id(string $id)
+    {
+        $Contact_Us = $this->get_by_field('id',$id);
+
+        return $Contact_Us->delete();
+    }
 }

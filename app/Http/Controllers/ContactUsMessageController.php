@@ -24,4 +24,13 @@ class ContactUsMessageController extends Controller
             200
         );
     }
+
+    public function delete_message(string $id)
+    {
+        (new ContactUsMessageAction())->delete_by_id($id);
+
+        return response()->json([
+            'message' => 'Message Deleted Successfully'
+        ],200);
+    }
 }
