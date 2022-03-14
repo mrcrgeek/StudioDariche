@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('contact_us_messages', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 150);
+            $table->string('email', 150);
+            $table->string('phoneNumber');
+            $table->string('message', 500);
             $table->timestamps();
         });
     }
