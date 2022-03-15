@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactUsMessageController;
+use App\Http\Controllers\ContactUsContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,7 @@ Route::get('/index/{id}', [WorkController::class, 'get_by_id']);
 Route::post('/ContactUsMessage', [ContactUsMessageController::class, 'store_message']);
 Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messages'])->middleware('auth:admins');
 Route::delete('/ContactUsContents/{id}', [ContactUsMessageController::class, 'delete_message'])->middleware('auth:admins');
+
+//ContactUs Content Routes
+Route::patch('/ContactUsContent/update',[ContactUsContentController::class, 'update']);
+Route::get('/ContactUsContent/get',[ContactUsContentController::class, 'get']);
