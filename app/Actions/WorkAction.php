@@ -99,15 +99,14 @@ class WorkAction extends \App\Services\Action
         {
             $get_limit_validation = $this->limit_array[$data['work_name']];
 
-            $WorkAction = $this->model::
-            where('work_name', $data['work_name'])
+            $WorkActionCount = $this->model::where('work_name', $data['work_name'])
                 ->where('type', $data['type'])
                 ->where('is_index', $data['is_index'])
-                ->get();
+                ->count();
 
-            if (count($WorkAction) == $get_limit_validation[$data['type']])
+            if ($WorkActionCount == $get_limit_validation[$data['type']])
             {
-                throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 0, 400);
+                throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 1, 400);
             }
         }
     }
@@ -143,6 +142,11 @@ class WorkAction extends \App\Services\Action
         if(isset($update_data['img']))
         {
             $update_data['img'] = $this->upload_file($update_data['img']);
+
+            if(is_file($work_data['img']))
+            {
+                unlink($work_data['img']);
+            }
         }
 
         return $this->model::where('id',$id)->update($update_data);
@@ -157,7 +161,7 @@ class WorkAction extends \App\Services\Action
 
     public function get_by_request(Request $request, array|string $query_validation_role = 'get_query', Model|Builder|null $eloquent = null, array $order_by = ['id' => 'DESC']): object
     {
-        return parent::get_by_request($request,$query_validation_role = 'get_query',$eloquent,$order_by);
+        return parent::get_by_request($request,$query_validation_role,$eloquent,$order_by);
     }
 
     public function query_to_eloquent(array $query, Model|Builder $eloquent = null)
@@ -171,17 +175,17 @@ class WorkAction extends \App\Services\Action
 
         if(isset($query['type']))
         {
-            $eloquent = $eloquent->where('type',$query['type']);
+            $eloquent = $eloquent->where('type', $query['type']);
         }
 
         if(isset($query['id']))
         {
-            $eloquent = $eloquent->where('id',$query['id']);
+            $eloquent = $eloquent->where('id', $query['id']);
         }
 
         if(isset($query['is_index']))
         {
-            $eloquent = $eloquent->where('is_index',$query['is_index']);
+            $eloquent = $eloquent->where('is_index', $query['is_index']);
         }
 
         return $eloquent;
