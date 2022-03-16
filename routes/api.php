@@ -6,6 +6,7 @@ use App\Http\Controllers\WorkController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactUsMessageController;
 use App\Http\Controllers\ContactUsContentController;
+use App\Http\Controllers\AboutUsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +21,16 @@ use App\Http\Controllers\ContactUsContentController;
 
 Route::prefix('/admin')->group(function (){
     //Auth
-    Route::post('/register',[AdminController::class, 'register']);
-    Route::post('/login',[AdminController::class, 'login']);
+    Route::post('/register', [AdminController::class, 'register']);
+    Route::post('/login', [AdminController::class, 'login']);
+
     //works(slides)
     Route::post('/add_art', [WorkController::class, 'add_art']);
     Route::patch('/update_art/{id}', [WorkController::class, 'update_art'])->middleware('auth:admins');
     Route::delete('/delete_art/{id}', [WorkController::class, 'delete_art'])->middleware('auth:admins');
+
     //middleware test
-    Route::get('/check_admin',[AdminController::class, 'check_admin'])->middleware('auth:admins');
+    Route::get('/check_admin', [AdminController::class, 'check_admin'])->middleware('auth:admins');
 });
 
 //get index Routes
@@ -40,5 +43,9 @@ Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messag
 Route::delete('/ContactUsContents/{id}', [ContactUsMessageController::class, 'delete_message'])->middleware('auth:admins');
 
 //ContactUs Content Routes
-Route::patch('/ContactUsContent/update',[ContactUsContentController::class, 'update']);
-Route::get('/ContactUsContent/get',[ContactUsContentController::class, 'get']);
+Route::patch('/ContactUsContent/update', [ContactUsContentController::class, 'update'])->middleware('auth:admins');
+Route::get('/ContactUsContent/get', [ContactUsContentController::class, 'get']);
+
+//AboutUs Routes
+Route::patch('/AboutUs/update', [AboutUsController::class, 'update'])->middleware('auth:admins');
+Route::get('/AboutUs/get', [AboutUsController::class, 'get']);
