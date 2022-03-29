@@ -31,7 +31,7 @@ class AdminAction extends \App\Services\Action
     {
         $data = $this->get_data_from_request($request,$validation_role);
 
-        return parent::store($data);
+        return $this->store($data);
     }
 
     public function store(array $data)
