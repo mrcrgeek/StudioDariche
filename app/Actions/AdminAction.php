@@ -53,7 +53,7 @@ class AdminAction extends \App\Services\Action
             }
         }
 
-        throw new CustomException('Name or Password is Wrong!',0,400);
+        throw new CustomException('Name or Password is Wrong!',2,400);
     }
 
     public function login_by_request(Request $request,$validation_rule = 'login')
