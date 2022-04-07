@@ -25,7 +25,7 @@ Route::prefix('/admin')->group(function (){
     Route::post('/login', [AdminController::class, 'login']);
 
     //works(slides)
-    Route::post('/add_art', [WorkController::class, 'add_art']);
+    Route::post('/add_art', [WorkController::class, 'add_art'])->middleware('auth:admins');
     Route::patch('/update_art/{id}', [WorkController::class, 'update_art'])->middleware('auth:admins');
     Route::delete('/delete_art/{id}', [WorkController::class, 'delete_art'])->middleware('auth:admins');
 

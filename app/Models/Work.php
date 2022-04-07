@@ -12,7 +12,8 @@ class Work extends Model
     protected $table = 'works';
 
     protected $fillable = [
-        'information',
+        'title',
+        'year',
         'img',
         'work_name',
         'type',

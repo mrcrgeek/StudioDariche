@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->id();
-            $table->string('information')->nullable();
+            $table->string('title', 1000)->nullable();
+            $table->string('year')->nullable();
             $table->string('img');
             $table->string('work_name');
             $table->string('type');

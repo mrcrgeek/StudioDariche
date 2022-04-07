@@ -13,7 +13,8 @@ class WorkAction extends \App\Services\Action
 {
     protected array $validation_roles = [
         'store_img' => [
-            'information' => 'required|string',
+            'title' => 'required|string',
+            'year' => 'required|string',
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
             'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
             'type' => 'required|in:img,color',
@@ -26,7 +27,8 @@ class WorkAction extends \App\Services\Action
             'is_index' => 'boolean|nullable'
         ],
         'update_img' => [
-            'information' => 'string',
+            'title' => 'required|string',
+            'year' => 'required|string',
             'img' => 'file|mimes:jpg,png,jpeg|max:10000',
             'is_index' => 'boolean|nullable'
         ],
