@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactUsMessageController;
 use App\Http\Controllers\ContactUsContentController;
 use App\Http\Controllers\AboutUsController;
+use App\Models\WeeklyWorks;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +50,4 @@ Route::get('/ContactUsContent/get', [ContactUsContentController::class, 'get']);
 //AboutUs Routes
 Route::patch('/AboutUs/update', [AboutUsController::class, 'update'])->middleware('auth:admins');
 Route::get('/AboutUs/get', [AboutUsController::class, 'get']);
+

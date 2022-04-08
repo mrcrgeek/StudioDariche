@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Exceptions\CustomException;
+use App\Models\WeeklyWorks;
 use App\Models\Work;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -11,36 +12,33 @@ use Illuminate\Database\Query\Builder;
 
 class WorkAction extends \App\Services\Action
 {
+    public $model;
+
     protected array $validation_roles = [
         'store_img' => [
             'title' => 'required|string',
             'year' => 'required|string',
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
             'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
-            'type' => 'required|in:img,color',
-            'is_index' => 'boolean|nullable'
+            'type' => 'required|in:img,color'
         ],
         'store_color' => [
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
             'work_name' => 'required|string|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
-            'type' => 'required|in:img,color',
-            'is_index' => 'boolean|nullable'
+            'type' => 'required|in:img,color'
         ],
         'update_img' => [
             'title' => 'required|string',
             'year' => 'required|string',
-            'img' => 'file|mimes:jpg,png,jpeg|max:10000',
-            'is_index' => 'boolean|nullable'
+            'img' => 'file|mimes:jpg,png,jpeg|max:10000'
         ],
         'update_color' => [
-            'img' => 'file|mimes:jpg,png,jpeg|max:10000',
-            'is_index' => 'boolean|nullable'
+            'img' => 'file|mimes:jpg,png,jpeg|max:10000'
         ],
         'get_query' => [
             'category' => 'string|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
             'type' => 'string|in:img,color',
-            'id' => 'integer',
-            'is_index' => 'boolean'
+            'id' => 'integer'
         ]
     ];
 
@@ -76,6 +74,11 @@ class WorkAction extends \App\Services\Action
         $this->model = Work::class;
     }
 
+    public function get_limit_array ()
+    {
+        return $this->limit_array;
+    }
+
     public function store_by_request(Request $request, $validation_role = 'store_img')
     {
         if($request['type'] == 'color')
@@ -88,30 +91,30 @@ class WorkAction extends \App\Services\Action
 
     public function store(array $data)
     {
-        $this->check_is_index($data);
+//        $this->check_is_index($data);
 
         $data['img'] = $this->upload_file($data['img']);
 
         return parent::store($data);
     }
 
-    public function check_is_index(array $data)
-    {
-        if(isset($data['is_index']))
-        {
-            $get_limit_validation = $this->limit_array[$data['work_name']];
-
-            $WorkActionCount = $this->model::where('work_name', $data['work_name'])
-                ->where('type', $data['type'])
-                ->where('is_index', $data['is_index'])
-                ->count();
-
-            if ($WorkActionCount == $get_limit_validation[$data['type']])
-            {
-                throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 1, 400);
-            }
-        }
-    }
+//    public function check_is_index(array $data)
+//    {
+//        if(isset($data['is_index']))
+//        {
+//            $get_limit_validation = $this->limit_array[$data['work_name']];
+//
+//            $WorkActionCount = $this->model::where('work_name', $data['work_name'])
+//                ->where('type', $data['type'])
+//                ->where('is_index', $data['is_index'])
+//                ->count();
+//
+//            if ($WorkActionCount == $get_limit_validation[$data['type']])
+//            {
+//                throw new CustomException("is_index {$data['type']} full for {$data['work_name']} WorkName", 1, 400);
+//            }
+//        }
+//    }
 
     public function update_entity_by_request_and_id(Request $request, string $id, $validation_role = 'update_img')
     {
@@ -132,14 +135,14 @@ class WorkAction extends \App\Services\Action
     {
         $work_data = $this->model::where('id',$id)->first()->toArray();
 
-        if(isset($update_data['is_index']) && $update_data['is_index'] != $work_data['is_index'])
-        {
-            if($update_data['is_index'])
-            {
-                $work_data['is_index'] = true;
-                $this->check_is_index($work_data);
-            }
-        }
+//        if(isset($update_data['is_index']) && $update_data['is_index'] != $work_data['is_index'])
+//        {
+//            if($update_data['is_index'])
+//            {
+//                $work_data['is_index'] = true;
+//                $this->check_is_index($work_data);
+//            }
+//        }
 
         if(isset($update_data['img']))
         {
@@ -187,6 +190,7 @@ class WorkAction extends \App\Services\Action
 
         if(isset($query['is_index']))
         {
+            (new WeeklyWorks())->change_if_should();
             $eloquent = $eloquent->where('is_index', $query['is_index']);
         }
 
