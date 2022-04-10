@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('img');
             $table->string('work_name');
             $table->string('type');
+            $table->string('category', 500);
             $table->boolean('is_index')->default(false);
             $table->timestamps();
         });

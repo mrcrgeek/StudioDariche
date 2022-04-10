@@ -20,7 +20,8 @@ class WorkAction extends \App\Services\Action
             'year' => 'required|string',
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
             'work_name' => 'required|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
-            'type' => 'required|in:img,color'
+            'type' => 'required|in:img,color',
+            'category' => 'required|string|max:500'
         ],
         'store_color' => [
             'img' => 'required|file|mimes:jpg,png,jpeg|max:10000',
@@ -28,9 +29,10 @@ class WorkAction extends \App\Services\Action
             'type' => 'required|in:img,color'
         ],
         'update_img' => [
-            'title' => 'required|string',
-            'year' => 'required|string',
-            'img' => 'file|mimes:jpg,png,jpeg|max:10000'
+            'title' => 'string',
+            'year' => 'string',
+            'img' => 'file|mimes:jpg,png,jpeg|max:10000',
+            'category' => 'string|max:500'
         ],
         'update_color' => [
             'img' => 'file|mimes:jpg,png,jpeg|max:10000'

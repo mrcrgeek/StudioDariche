@@ -17,6 +17,7 @@ class Work extends Model
         'img',
         'work_name',
         'type',
+        'category',
         'is_index'
     ];
 
