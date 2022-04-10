@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email', 150);
             $table->string('phoneNumber');
             $table->string('message', 500);
+            $table->boolean('is_seen')->default(false);
             $table->timestamps();
         });
     }
