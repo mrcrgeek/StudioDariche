@@ -47,6 +47,13 @@ class ContactUsMessageAction extends \App\Services\Action
         return $ContactUsMessage;
     }
 
+    public function unseen_messages_count(Request $request)
+    {
+        return response()->json([
+            'count' =>$this->model::where('is_seen', false)->count()
+        ]);
+    }
+
     public function delete_by_id(string $id)
     {
         $Contact_Us = $this->get_by_field('id',$id);

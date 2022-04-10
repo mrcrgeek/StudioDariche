@@ -25,6 +25,11 @@ class ContactUsMessageController extends Controller
         );
     }
 
+    public function unseen_messages_count(Request $request)
+    {
+        return (new ContactUsMessageAction())->unseen_messages_count($request);
+    }
+
     public function delete_message(string $id)
     {
         (new ContactUsMessageAction())->delete_by_id($id);

@@ -46,6 +46,7 @@ Route::delete('/ContactUsContents/{id}', [ContactUsMessageController::class, 'de
 //ContactUs Content Routes
 Route::patch('/ContactUsContent/update', [ContactUsContentController::class, 'update'])->middleware('auth:admins');
 Route::get('/ContactUsContent/get', [ContactUsContentController::class, 'get']);
+Route::get('/ContactUs/unseen_messages_count', [ContactUsMessageController::class, 'unseen_messages_count'])->middleware('auth:admins');
 
 //AboutUs Routes
 Route::patch('/AboutUs/update', [AboutUsController::class, 'update'])->middleware('auth:admins');
