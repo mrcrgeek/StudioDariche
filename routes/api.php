@@ -38,15 +38,16 @@ Route::prefix('/admin')->group(function (){
 Route::get('/index', [WorkController::class, 'get_art']);
 Route::get('/index/{id}', [WorkController::class, 'get_by_id']);
 
-//ContactUs Routes(get,post)
+//ContactUs Messages Route Routes(get,post)
 Route::post('/ContactUsMessage', [ContactUsMessageController::class, 'store_message']);
-Route::get('/ContactUsContents', [ContactUsMessageController::class, 'get_messages'])->middleware('auth:admins');
-Route::delete('/ContactUsContents/{id}', [ContactUsMessageController::class, 'delete_message'])->middleware('auth:admins');
+Route::get('/ContactUsMessages', [ContactUsMessageController::class, 'get_messages'])->middleware('auth:admins');
+Route::delete('/ContactUsMessage/{id}', [ContactUsMessageController::class, 'delete_message'])->middleware('auth:admins');
+Route::get('/ContactUsMessages/{id}', [ContactUsMessageController::class, 'seen_message'])->middleware('auth:admins');
+Route::get('/ContactUs/unseen_messages_count', [ContactUsMessageController::class, 'unseen_messages_count'])->middleware('auth:admins');
 
 //ContactUs Content Routes
 Route::patch('/ContactUsContent/update', [ContactUsContentController::class, 'update'])->middleware('auth:admins');
 Route::get('/ContactUsContent/get', [ContactUsContentController::class, 'get']);
-Route::get('/ContactUs/unseen_messages_count', [ContactUsMessageController::class, 'unseen_messages_count'])->middleware('auth:admins');
 
 //AboutUs Routes
 Route::patch('/AboutUs/update', [AboutUsController::class, 'update'])->middleware('auth:admins');

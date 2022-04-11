@@ -29,22 +29,19 @@ class ContactUsMessageAction extends \App\Services\Action
 
     public function get_all_by_request(Request $request)
     {
-        $ContactUsMessage = PaginationService::paginate_with_request(
+        return PaginationService::paginate_with_request(
             $request,
             ContactUsMessage::orderBy('id','DESC')
         );
+    }
 
-        if(!empty($ContactUsMessage))
-        {
-            foreach ($ContactUsMessage->data as $item)
-            {
-                $this->model::where('id', $item->id)->update([
-                    'is_seen' => true
-                ]);
-            }
-        }
+    public function get_by_id(string $id)
+    {
+        $this->model::where('id', $id)->update([
+            'is_seen' => true
+        ]);
 
-        return $ContactUsMessage;
+        return parent::get_by_id($id);
     }
 
     public function unseen_messages_count(Request $request)

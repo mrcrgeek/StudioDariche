@@ -25,6 +25,13 @@ class ContactUsMessageController extends Controller
         );
     }
 
+    public function seen_message($id)
+    {
+        return response()->json(
+            (new ContactUsMessageAction())->get_by_id($id)
+        );
+    }
+
     public function unseen_messages_count(Request $request)
     {
         return (new ContactUsMessageAction())->unseen_messages_count($request);
