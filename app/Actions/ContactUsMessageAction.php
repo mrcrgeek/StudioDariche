@@ -29,10 +29,26 @@ class ContactUsMessageAction extends \App\Services\Action
 
     public function get_all_by_request(Request $request)
     {
-        return PaginationService::paginate_with_request(
+
+        $Message_Contents = PaginationService::paginate_with_request(
             $request,
             ContactUsMessage::orderBy('id','DESC')
         );
+
+        if(!empty($Message_Contents))
+        {
+            foreach ($Message_Contents->data as $message)
+            {
+                if($message->is_seen != true)
+                {
+                    $this->model::where('id',$message->id)->update([
+                        'is_seen' => true
+                    ]);
+                }
+            }
+        }
+
+        return $Message_Contents;
     }
 
     public function get_by_id(string $id)
