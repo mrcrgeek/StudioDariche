@@ -233,7 +233,7 @@ class Action
             $eloquent
         );
 
-//        $eloquent = $this->add_order_to_eloquent($order_by, $eloquent);
+        $eloquent = $this->add_order_to_eloquent($order_by, $eloquent);
 
         return PaginationService::paginate_with_request(
             $request,
@@ -246,7 +246,7 @@ class Action
      * @param Builder|Model $eloquent
      * @return mixed
      */
-    protected function add_order_to_eloquent (array $orders, Builder|Model $eloquent)
+    protected function add_order_to_eloquent (array $orders, $eloquent)
     {
         foreach ($orders AS $key => $value)
         {
