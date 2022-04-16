@@ -38,38 +38,43 @@ class WorkAction extends \App\Services\Action
             'img' => 'file|mimes:jpg,png,jpeg|max:10000'
         ],
         'get_query' => [
+            'is_index' => 'in:0,1,true,false',
             'category' => 'string|in:corporate_identity,poster,typeface_design,printing&packaging,environmental_graphic_design_EGD,illustration',
             'type' => 'string|in:img,color',
             'id' => 'integer'
         ]
     ];
 
+    protected array $unusual_fields = [
+        'is_index' => 'boolean'
+    ];
+
     protected array $limit_array = [
-            'corporate_identity' => [
-                'color' => 3,
-                'img' => 4
-            ],
-            'poster' => [
-                'color' => 3,
-                'img' => 3
-            ],
-            'typeface_design' => [
-                'color' => 4,
-                'img' => 3
-            ],
-            'printing&packaging' => [
-                'color' => 3,
-                'img' => 4
-            ],
-            'environmental_graphic_design_EGD' => [
-                'color' => 4,
-                'img' => 3
-            ],
-            'illustration' => [
-                'color' => 3,
-                'img' => 4
-            ]
-        ];
+        'corporate_identity' => [
+            'color' => 3,
+            'img' => 4
+        ],
+        'poster' => [
+            'color' => 3,
+            'img' => 3
+        ],
+        'typeface_design' => [
+            'color' => 4,
+            'img' => 3
+        ],
+        'printing&packaging' => [
+            'color' => 3,
+            'img' => 4
+        ],
+        'environmental_graphic_design_EGD' => [
+            'color' => 4,
+            'img' => 3
+        ],
+        'illustration' => [
+            'color' => 3,
+            'img' => 4
+        ]
+    ];
 
     public function __construct()
     {
